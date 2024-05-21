@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor Client as C
+participant Backend as B
+database Postgres as P
+
+C -> B: BatchSetUserBalanceRequest\n1: Map<Int, Int> (ID, Balance)
+B -> P: get BalanceEntity's by IDs (select * from balances where accountId in (?, ..., ?))
+note left: was omitted \`set-users` sounds like overwrite
+B -> B: chunking Request into List<Chunk>
+B -> B: based on Chunk create Iterable<BalanceEntity>
+B -> P: batch save of chunk
+B -> B: collect response
+B -> C: ResponseEntity\nStatusCode: 200 OK
+note left: could be returned 204 Accepted as fast as receiver request\nIf client does nt need result
+
+@enduml

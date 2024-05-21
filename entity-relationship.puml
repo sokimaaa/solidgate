@@ -1,0 +1,11 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+entity BalanceEntity {
+    PK: INT account_od
+    INT balance
+}
+
+note left: name field was not used, so omitted
+
+@enduml
